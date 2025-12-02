@@ -1,4 +1,4 @@
-Student Performance — Data Exploration & Analysis (Assignment README)
+Student Performance — Data Exploration & Analysis
 
 A focused exploratory data analysis pipeline that ingests two student datasets, cleans and merges them, inspects score distributions by demographic groups, visualises performance, and performs non-parametric hypothesis testing to check for differences between age groups.
 
