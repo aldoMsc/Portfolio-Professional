@@ -8,7 +8,6 @@ Table of contents:
 - What the code does 
 - Data
 - Key findings 
-- Requirements
 - How to run
 - Files & code structure
 - Detailed pipeline / steps performed
@@ -66,32 +65,6 @@ Outliers in score (using 1.5×IQR rule): 520 (kept intentionally)
 Normality test (Anderson–Darling): the score distribution is not normal (statistic ≫ critical values).
 Kruskal–Wallis test across age bands: H ≈ 196.26, p ≈ 2.41e-43 → reject null: at least one age group differs in score distribution.
 
- --- Requirements
-
-Create an environment and install required packages:
-
-# Recommended: create a venv
-python -m venv .venv
-source .venv/bin/activate          # macOS / Linux
-.venv\Scripts\activate             # Windows PowerShell
-
-pip install -r requirements.txt
-
-Example requirements.txt (minimum):
-
-pandas>=1.5
-numpy
-scipy
-matplotlib
-seaborn
-
- --- How to run
-
-If the code is in a single script (e.g. analysis.py), run:
-
-python analysis.py
-
-
 If you run in a Jupyter Notebook, run the notebook cells in order. Update CSV file paths at the top of the script/notebook to match your machine or make them relative.
 
  --- Files & code structure
@@ -112,41 +85,25 @@ If you run in a Jupyter Notebook, run the notebook cells in order. Update CSV fi
  --- Detailed pipeline / steps performed
 
 Load libraries: pandas, numpy, scipy, matplotlib, seaborn.
-
 Read CSVs using pd.read_csv.
-
 Initial inspection: head(), describe() — look for missing values.
-
 Drop Unnamed: 0 column (index artefact) and dropna() to remove rows with nulls.
-
 Check duplicates and remove full-row duplicates (drop_duplicates()).
-
 Merge with pd.merge(..., how='left') on id_student.
-
 Compute group statistics (mean scores by highest_education and age_band).
-
 Bin scores into 5-point ranges and create pivot/heatmap counts.
-
 Outlier detection: IQR method; count and visualise but keep them.
-
 Normality test: Anderson–Darling.
-
 Group comparison: Kruskal–Wallis (non-parametric ANOVA alternative) across age bands.
-
 Visualisations: histogram with category overlay, countplot for age bands, boxplots by age, heatmap of binned scores.
 
  --- Visualisations produced
 
 Histogram of scores (with KDE)
-
 Histogram of scores grouped by >=50 / <50
-
 Countplot of age_band
-
 Boxplots of score by age_band (outliers visible)
-
 Horizontal heatmap of student counts per 5-point score bin
-
 Boxplot with IQR boundary lines showing outliers
 
 Tip: Save plots to outputs/figures/ by calling plt.savefig("outputs/figures/plot_name.png", bbox_inches='tight') after each plt.show() if you want exportable images.
@@ -154,21 +111,15 @@ Tip: Save plots to outputs/figures/ by calling plt.savefig("outputs/figures/plot
  --- Statistics & tests
 
 Normality: Anderson–Darling; the score distribution strongly rejects normality.
-
 Group difference (age_band): Kruskal–Wallis H test used because distribution is non-normal; result indicates statistically significant differences in score distributions across age bands (p ≪ 0.05).
-
 Interpretation: there are meaningful differences between age groups in student scores; follow-up pairwise tests with multiple-comparison correction (e.g., Dunn’s test + Bonferroni/Benjamini–Hochberg) are recommended to identify which specific pairs differ.
 
  --- Decisions, assumptions & notes
 
 Dropped rows with any null values — this is simple and safe for this assignment, but consider imputation for click_events (or using fillna(0)) if you want to keep more rows for analyses involving activity.
-
 Removed Unnamed: 0 because it was redundant and could cause merge/index issues.
-
 Duplicates: full-row duplicates were removed for part_2a. If duplicates in id_student are expected (e.g., multiple records per student over time), a different de-duplication strategy would be needed.
-
 Outliers: intentionally kept — they represent real high/low scoring students, not measurement errors (per your notes).
-
 Normality assumption violated, hence use of non-parametric testing for comparing groups.
 
  --- License & contact
